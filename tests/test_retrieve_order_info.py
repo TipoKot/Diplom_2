@@ -1,6 +1,7 @@
 import requests
 import allure
 from data import BASE_URL
+from response_messages import ERROR_UNAUTHORIZED
 
 class TestRetrieveOrderInfo:
     # Получение заказов конкретного пользователя
@@ -18,4 +19,4 @@ class TestRetrieveOrderInfo:
         response = requests.get(f'{BASE_URL}/orders')
         assert response.status_code == 401, "Expected status code 401 for unauthorized order retrieval"
         assert response.json()["success"] is False, "Expected 'success' to be False in response"
-        assert response.json()["message"] == "You should be authorised", "Expected specific error message for unauthorized access"
+        assert response.json()["message"] == ERROR_UNAUTHORIZED, "Expected specific error message for unauthorized access"

@@ -2,6 +2,7 @@ import requests
 import allure
 import random
 from data import BASE_URL
+from response_messages import ERROR_REQUIRED_FIELDS
 
 class TestUserRegistration:
     @allure.title("Тестирование регистрации пользователя")
@@ -37,4 +38,4 @@ class TestUserRegistration:
         response = requests.post(f'{BASE_URL}/auth/register', json=payload)
         assert response.status_code == 403, "Expected status code 403 for missing required field"
         assert response.json()["success"] is False, "Expected False for 'success' in response"
-        assert response.json()["message"] == "Email, password and name are required fields", "Expected specific error message for missing required field"
+        assert response.json()["message"] == ERROR_REQUIRED_FIELDS, "Expected specific error message for missing required field"

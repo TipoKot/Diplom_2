@@ -1,6 +1,7 @@
 import requests
 import allure
 from data import BASE_URL
+from response_messages import ERROR_NO_INGREDIENTS, ERROR_INVALID_INGREDIENT
 
 class TestCreateOrder:
     # с авторизацией
@@ -35,7 +36,7 @@ class TestCreateOrder:
         response = requests.post(f'{BASE_URL}/orders', json=payload)
         assert response.status_code == 400, "Expected status code 400 for order creation without ingredients"
         assert response.json()["success"] is False, "Expected 'success' to be False in response"
-        assert "Ingredient ids must be provided" in response.text, "Expected error message for empty ingredients"
+        assert ERROR_NO_INGREDIENTS in response.text, "Expected error message for empty ingredients"
 
     # с неверным хешем ингредиентов
     @allure.title("Create order with invalid ingredient hash")
@@ -46,4 +47,4 @@ class TestCreateOrder:
         response = requests.post(f'{BASE_URL}/orders', json=payload)
         assert response.status_code == 400, "Expected status code 400 for order creation with invalid ingredient hash"
         assert response.json()["success"] is False, "Expected 'success' to be False in response"
-        assert "One or more ids provided are incorrect" in response.text, "Expected error message for invalid ingredient hash"
+        assert ERROR_INVALID_INGREDIENT in response.text, "Expected error message for invalid ingredient hash"

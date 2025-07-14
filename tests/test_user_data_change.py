@@ -2,6 +2,7 @@ import requests
 import allure
 import random
 from data import BASE_URL
+from response_messages import ERROR_UNAUTHORIZED
 
 class TestUserDataChange:
     # Для обеих ситуаций нужно проверить, что любое поле можно изменить. Для неавторизованного пользователя — ещё и то, что система вернёт ошибку.
@@ -32,4 +33,4 @@ class TestUserDataChange:
         response = requests.patch(f'{BASE_URL}/auth/user', json=payload)
         assert response.status_code == 401, "Expected status code 401 for unauthorized user data change"
         assert response.json()["success"] is False, "Expected 'success' to be False in response"
-        assert response.json()["message"] == "You should be authorised", "Expected specific error message for unauthorized access"
+        assert response.json()["message"] == ERROR_UNAUTHORIZED, "Expected specific error message for unauthorized access"
